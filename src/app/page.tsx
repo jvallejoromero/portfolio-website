@@ -1,13 +1,12 @@
-import {GridBackground} from "@/components/GridBackground";
+import {HeroSection} from "@/components/HeroSection";
 import React from "react";
+import AboutSection from "@/components/AboutSection";
 
 export default function Home() {
   return (
       <div>
-          <GridBackground />
-          <div className="h-[100dvh]">
-
-          </div>
+          <HeroSection />
+          <AboutSection />
       </div>
   );
 }
