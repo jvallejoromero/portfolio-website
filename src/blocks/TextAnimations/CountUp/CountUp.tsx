@@ -41,7 +41,7 @@ export default function CountUp({
   let stiffness: number;
 
   if (range <= 10) {
-    damping   =  60;
+    damping   =  100;
     stiffness = 300;
   } else {
     damping   = 20 + 40 * (1 / duration);

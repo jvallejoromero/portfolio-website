@@ -25,18 +25,17 @@ const TimelineItem = ({index, date, title}: {index: number, date: string, title:
 
 const AboutSection = () => {
     return (
-        <section id="about" className="relative h-[100dvh] flex flex-col items-start justify-start m-10">
+        <section id="about" className="relative flex flex-col items-start justify-start m-10">
             <div className="flex flex-col lg:flex-row w-full gap-12 lg:gap-0">
 
                 {/* About Me */}
                 <div className="flex flex-1 flex-col gap-2">
                     {/* Introduction */}
-                    <h1 className="font-medium text-lg xs:text-xl md:text-2xl">About Me</h1>
-
-                    <p className="text-base leading-snug xs:text-lg xs:leading-relaxed">
+                    <h1>About Me</h1>
+                    <p>
                         I’m a recent Computer Science graduate with strong Java-based OOP fundamentals and hands-on experience building performant, scalable React applications.
                     </p>
-                    <p className="text-base leading-snug xs:text-lg xs:leading-relaxed">
+                    <p>
                         I thrive on adopting new technologies and frameworks—driven by rapid learning demonstrated through international study in France and self-led projects.
                     </p>
 
@@ -86,7 +85,7 @@ const AboutSection = () => {
                 </div>
             </div>
         </section>
-    )
+    );
 }
 
-export default AboutSection
+export default AboutSection;

@@ -4,7 +4,7 @@ import BlurText from "@/blocks/TextAnimations/BlurText/BlurText";
 import {SiGithub, SiLinkedin} from "react-icons/si";
 import {HiChevronDown} from "react-icons/hi";
 
-export function HeroSection() {
+const HeroSection = () => {
     return (
         <div className="relative flex h-[100dvh] w-full items-center justify-center bg-white dark:bg-black">
             {/* Radial gradients for the container to give a faded look */}
@@ -67,3 +67,5 @@ export function HeroSection() {
         </div>
     );
 }
+
+export default HeroSection;

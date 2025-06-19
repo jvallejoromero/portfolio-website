@@ -132,6 +132,12 @@
     font-family: var(--font-sans), sans-serif;
     @apply bg-background text-foreground;
   }
+  h1 {
+    @apply font-medium text-lg xs:text-xl md:text-2xl;
+  }
+  p {
+    @apply text-base leading-snug xs:text-lg xs:leading-relaxed;
+  }
 }
 
 @layer utilities {
