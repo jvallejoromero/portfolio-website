@@ -150,6 +150,9 @@
   .animate-delay-2800 {
     animation-delay: 2.8s;
   }
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
 }
 
 @keyframes fade-in {
@@ -162,4 +165,9 @@
 @keyframes fade-slide-smooth {
   from { opacity: 0; transform: translateY(1rem); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1}
+  50% { opacity: 0}
 }

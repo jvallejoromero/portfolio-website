@@ -6,6 +6,7 @@ import Image from "next/image";
 import {Bot, Puzzle} from "lucide-react";
 import DecryptedText from "@/blocks/TextAnimations/DecryptedText/DecryptedText";
 import TextCursor from "@/blocks/TextAnimations/TextCursor/TextCursor";
+import SimpleSectionLayout from "@/components/SimpleSectionLayout";
 
 type HeaderSkeletonProps = {
     children?: React.ReactNode;
@@ -117,89 +118,86 @@ const ProjectsSection = () => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
     return (
-        <section id="projects" className="relative flex flex-col items-start justify-start ml-10 mr-10 mt-15">
-            <div className="flex flex-col lg:flex-row w-full">
+        <SimpleSectionLayout sectionId="projects">
+            {/* Projects Grid */}
+            <div className="flex flex-col content-start justify-start items-start gap-2 w-full">
+                <h1>Projects</h1>
+                <p>
+                    Explore my latest work.
+                </p>
+                <BentoGrid className="mt-5 self-start">
+                    {items.map((item, i) => (
+                        <BentoGridItem
+                            key={i}
+                            title={item.title}
+                            description={item.description}
+                            header={item.header}
+                            icon={item.icon}
+                            className={i === 3 || i === 6 ? "md:col-span-3" : ""}
+                            onMouseEnter={() => setHoveredIndex(i)}
+                            onMouseLeave={() => setHoveredIndex(null)}
+                            onClick={() => console.log("Clicked", item.title)} //TODO: redirect to more detailed pages
+                        />
+                    ))}
+                </BentoGrid>
+            </div>
 
-                {/* Projects Grid */}
-                <div className="flex flex-col content-start justify-start items-start gap-2 w-full">
-                    <h1>Projects</h1>
-                    <p>
-                        Explore my latest work.
-                    </p>
-                    <BentoGrid className="mt-5 self-start">
-                        {items.map((item, i) => (
-                            <BentoGridItem
-                                key={i}
-                                title={item.title}
-                                description={item.description}
-                                header={item.header}
-                                icon={item.icon}
-                                className={i === 3 || i === 6 ? "md:col-span-3" : ""}
-                                onMouseEnter={() => setHoveredIndex(i)}
-                                onMouseLeave={() => setHoveredIndex(null)}
-                                onClick={() => console.log("Clicked", item.title)} //TODO: redirect to more detailed pages
-                            />
-                        ))}
-                    </BentoGrid>
-                </div>
-
-                {/* Projects Preview */}
-                <div className="w-full hidden xl:flex">
-                    <div className="flex flex-1 min-h-[calc(100%)] justify-center items-center">
-                        {hoveredIndex !== null ? (
-                            <div className="flex flex-1 flex-col h-full justify-end items-center p-10 gap-5">
-                                {items[hoveredIndex].previewVideo && (
-                                    <video
-                                        key={items[hoveredIndex].previewVideo}
-                                        className="h-auto max-h-80 rounded-xl shadow-2xl dark:shadow-none mb-2"
-                                        src={items[hoveredIndex].previewVideo}
-                                        autoPlay
-                                        loop
-                                        muted
-                                        playsInline
-                                    />
-                                )}
-
-                                <div className="flex flex-col gap-0.5 rounded-2xl bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-900/70 dark:to-neutral-800/60 p-6 backdrop-blur-sm shadow-xl dark:shadow-lg border border-neutral-200/50 dark:border-white/10 max-w-2xl">
-                                    <DecryptedText
-                                        text={`${hoveredIndex + 1}. ${items[hoveredIndex].title}`}
-                                        animateOn="view"
-                                        revealDirection="center"
-                                        speed={100}
-                                        className="text-lg font-semibold"
-                                        encryptedClassName="font-mono text-xs"
-                                    />
-                                    <DecryptedText
-                                        text={items[hoveredIndex].fullDescription}
-                                        animateOn="view"
-                                        revealDirection="center"
-                                        speed={100}
-                                        className="text-sm text-black dark:text-neutral-300"
-                                        encryptedClassName="font-mono text-xs"
-                                    />
-                                    <p className="text-xs text-black dark:text-neutral-500">Technologies: {items[hoveredIndex].technologies}</p>
-                                    <p className="text-xs text-black dark:text-neutral-500">Status: {items[hoveredIndex].status}</p>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="relative flex items-center justify-center w-full h-full">
-                                <TextCursor
-                                    text="👆"
-                                    delay={0.01}
-                                    spacing={60}
-                                    followMouseDirection={true}
-                                    randomFloat={true}
-                                    exitDuration={0.3}
-                                    removalInterval={20}
-                                    maxPoints={10}
+            {/* Projects Preview */}
+            <div className="w-full hidden xl:flex">
+                <div className="flex flex-1 min-h-[calc(100%)] justify-center items-center">
+                    {hoveredIndex !== null ? (
+                        <div className="flex flex-1 flex-col h-full justify-end items-center p-10 gap-5">
+                            {items[hoveredIndex].previewVideo && (
+                                <video
+                                    key={items[hoveredIndex].previewVideo}
+                                    className="h-auto max-h-80 rounded-xl shadow-2xl dark:shadow-none mb-2"
+                                    src={items[hoveredIndex].previewVideo}
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
                                 />
-                                <div className="absolute text-neutral-800 dark:text-neutral-400 italic animate-bounce">Hover a project to preview details</div>
+                            )}
+
+                            <div className="flex flex-col gap-0.5 rounded-2xl bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-900/70 dark:to-neutral-800/60 p-6 backdrop-blur-sm shadow-xl dark:shadow-lg border border-neutral-200/50 dark:border-white/10 max-w-2xl">
+                                <DecryptedText
+                                    text={`${hoveredIndex + 1}. ${items[hoveredIndex].title}`}
+                                    animateOn="view"
+                                    revealDirection="center"
+                                    speed={100}
+                                    className="text-lg font-semibold"
+                                    encryptedClassName="font-mono text-xs"
+                                />
+                                <DecryptedText
+                                    text={items[hoveredIndex].fullDescription}
+                                    animateOn="view"
+                                    revealDirection="center"
+                                    speed={100}
+                                    className="text-sm text-black dark:text-neutral-300"
+                                    encryptedClassName="font-mono text-xs"
+                                />
+                                <p className="text-xs text-black dark:text-neutral-500">Technologies: {items[hoveredIndex].technologies}</p>
+                                <p className="text-xs text-black dark:text-neutral-500">Status: {items[hoveredIndex].status}</p>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        <div className="relative flex items-center justify-center w-full h-full">
+                            <TextCursor
+                                text="✨"
+                                delay={0.01}
+                                spacing={60}
+                                followMouseDirection={true}
+                                randomFloat={true}
+                                exitDuration={0.3}
+                                removalInterval={20}
+                                maxPoints={10}
+                            />
+                            <div className="absolute text-neutral-800 dark:text-neutral-400 italic animate-bounce">Hover a project to preview details</div>
+                        </div>
+                    )}
                 </div>
             </div>
-        </section>
+        </SimpleSectionLayout>
     );
 }
 
