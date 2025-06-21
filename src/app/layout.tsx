@@ -2,6 +2,20 @@ import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "next-themes";
 
+export {};
+
+declare global {
+    interface Window {
+        grecaptcha: {
+            execute: (
+                siteKey: string,
+                options: { action: string }
+            ) => Promise<string>;
+            ready: (cb: () => void) => void;
+        };
+    }
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{

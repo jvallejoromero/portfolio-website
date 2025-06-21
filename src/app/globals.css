@@ -138,11 +138,17 @@
   p {
     @apply text-base leading-snug xs:text-lg xs:leading-relaxed;
   }
+  .grecaptcha-badge {
+    visibility: hidden !important;
+  }
 }
 
 @layer utilities {
   .animate-fade-slide-smooth {
     animation: fade-slide-smooth 3.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .animate-fade-in {
+    animation: fade-out 0.1s ease-out forwards;
   }
   .animate-fade-in-2 {
     animation: fade-in 2s ease-out forwards;

@@ -1,6 +1,9 @@
+"use client";
+
 import React from 'react'
 import SimpleSectionLayout from "@/components/SimpleSectionLayout";
 import MockInstagramPost from "@/components/MockInstagramPost";
+import ContactForm from "@/components/ContactForm";
 
 const mockUsers = [
     "cool_person",
@@ -46,7 +49,7 @@ const mockComments = [
 
 const ContactSection = () => {
     return (
-        <SimpleSectionLayout sectionId={"contact"}>
+        <SimpleSectionLayout sectionId={"contact"} divClassName="gap-10 lg:gap-0">
             <div className="flex flex-1 flex-col gap-2">
                 <h1>Contact</h1>
                 <p>Let&#39;s Work Together</p>
@@ -64,8 +67,8 @@ const ContactSection = () => {
                     className={"shadow-md shadow-neutral-300/10"}
                 />
             </div>
-            <div className="flex flex-1">
-                <h1>Contact</h1>
+            <div className="flex flex-1 items-center justify-center">
+                <ContactForm />
             </div>
         </SimpleSectionLayout>
     );

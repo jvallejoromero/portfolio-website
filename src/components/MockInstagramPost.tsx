@@ -2,8 +2,9 @@
 
 import {MoreHorizontal, Heart, MessageCircle, Send, Bookmark, LucideIcon} from "lucide-react";
 import Image from "next/image";
-import React, {JSX, useEffect, useRef, useState} from "react";
+import React, {JSX, useEffect, useRef, useState, useTransition} from "react";
 import { motion } from "framer-motion";
+import { useClickOutside } from "@/hooks/MouseClickHook";
 
 type MockInstagramPostProps = {
     profileImageSrc: string,
@@ -39,7 +40,6 @@ const createHashtags = (input: string): (string | JSX.Element)[] => {
 }
 
 const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username", location="somewhere", caption, className="", mockUsers=["user123"], mockComments=["This is amazing!"]}: MockInstagramPostProps) => {
-
     const [isSaved, setIsSaved] = useState<boolean>(false);
 
     const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -49,14 +49,21 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
     const [isCommented, setIsCommented] = useState<boolean>(false);
     const [commentCount, setCommentCount] = useState<number>(0);
     const [displayedComment, setDisplayedComment] = useState<string>("");
+    const [, startTransition] = useTransition();
 
     const [mockUser, setMockUser] = useState<string>("");
 
-    const [showBigHeart, setShowBigHeart] = useState<boolean>(false);
-    const [isShowingHeart, setIsShowingHeart] = useState<boolean>(false);
+    const [isAnimatingHeart, setIsAnimatingHeart] = useState<boolean>(false);
     const [tapCoords, setTapCoords] = useState<{ x: number; y: number } | null>(null);
 
     const mainImageRef = useRef<HTMLDivElement>(null);
+    const animationTimeoutRef = useRef<NodeJS.Timeout>(null);
+
+    const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState<boolean>(false);
+    const optionsMenuButtonRef = useRef<HTMLDivElement>(null);
+    const optionsMenuRef = useRef<HTMLDivElement>(null);
+
+    useClickOutside([optionsMenuButtonRef, optionsMenuRef], () => setIsOptionsMenuOpen(false));
 
     type AnimatedIconProps = {
         onClick?: () => void;
@@ -81,7 +88,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
             }
         }, [animate]);
 
-        const MotionIcon = motion(Icon);
+        const MotionIcon = motion.create(Icon);
 
         return (
             <MotionIcon
@@ -96,7 +103,9 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
     };
 
     const BigHeart = ({ x, y }: { x: number; y: number }) => {
-        const MotionHeart = motion(Heart);
+        const MotionHeart = motion.create(Heart);
+        const diagonalOffset = (Math.random() - 0.5) * 80;
+
         return (
             <div
                 className="absolute pointer-events-none z-50"
@@ -104,26 +113,32 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                     left: x,
                     top: y,
                     transform: "translate(-50%, -50%)",
+                    willChange: "transform, opacity",
+                    WebkitBackfaceVisibility: "hidden",
                 }}
             >
                 {/* Floating Heart */}
                 <MotionHeart
-                    initial={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
+                    style={{ y: "0%" }}
+                    initial={{ scale: 0.5, opacity: 1, x: 0, y: 0, rotate: 0 }} // start slightly smaller
                     animate={{
-                        scale: [1.4, 1],
-                        opacity: [1, 0],
-                        y: -60,
-                        rotate: [0, -10, 10, -6, 6, -2, 2, 0], // wobble
+                        scale: [1.3, 1], // pop larger then settle at normal
+                        rotate: [0, -5, 5, -3, 3, 0], // subtle wobble
+                        x: [0, diagonalOffset], // more obvious diagonal shift
+                        y: [0, -180], // faster, more aggressive upward motion
+                        opacity: [1, 0], // fade out
                     }}
                     transition={{
-                        duration: 0.9,
-                        ease: "easeOut",
+                        scale: { duration: 0.4, ease: "easeInOut" }, // grow/pop matches wobble duration
+                        rotate: { duration: 0.4, ease: "easeInOut" },   // wobble
+                        x: { duration: 0.2, delay: 0.4, ease: "easeIn" },  // diagonal move
+                        y: { duration: 0.2, delay: 0.4, ease: "easeIn" },   // upward move
+                        opacity: { duration: 0.2, delay: 0.4, ease: "easeIn" },   // fade aligned
                     }}
                     fill="url(#heartGradient)"
                     stroke="none"
                     className="w-24 h-24"
                 />
-
                 {/* Gradient Definition */}
                 <svg className="absolute w-0 h-0">
                     <defs>
@@ -135,6 +150,42 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                     </defs>
                 </svg>
             </div>
+        );
+    }
+
+    const OptionsMenu = () => {
+        const menuOptions = ["Message", "More Info"];
+        return (
+            <motion.div
+                ref={optionsMenuRef}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.2 }}
+                className=" absolute mt-2 right-0 top-0 w-40
+                            bg-white/50 dark:bg-black/20
+                            backdrop-blur-lg
+                            border border-gray-500/20 dark:border-black/30
+                            rounded-2xl
+                            shadow-lg shadow-black/20
+                            overflow-hidden
+                            z-10"
+            >
+                <ul className="divide-y divide-white/10 py-1">
+                    {menuOptions.map((option, index) => (
+                        <OptionsMenuButton key={index} title={option} />
+                    ))}
+                </ul>
+            </motion.div>
+        );
+    }
+
+    const OptionsMenuButton = ({ title }: { title: string }) => {
+        return (
+            <li className="px-2 py-2 text-sm font-medium text-gray-800 dark:text-gray-100
+                        hover:bg-gray-100/20 dark:hover:bg-gray-800/30 cursor-pointer">
+                {title}
+            </li>
         );
     }
 
@@ -156,24 +207,11 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
         setIsSaved(!isSaved);
     }
 
-    const handleHeartClick = (coords?: { x: number; y: number }) => {
-        const wasLiked = isLiked;
-        if (!isShowingHeart) {
-            triggerHeartAnimation(coords?.x, coords?.y);
-        }
-
-        if (isLiked) {
-            return;
-        }
-
-        setIsLiked(!wasLiked);
-        setLikes(prev => prev + (wasLiked ? -1 : 1));
-    }
-
     const handleCommentClick = () => {
         if (isTypingComment) {
             return;
         }
+
         if (!isCommented) {
             setIsCommented(true);
             setCommentCount(1);
@@ -191,18 +229,38 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
         let i = 0;
 
         const typeNextChar = () => {
-            setDisplayedComment(comment.slice(0, i + 1));
+            startTransition(() => {
+                setDisplayedComment(comment.slice(0, i + 1));
+            });
+
             i++;
 
             if (i < comment.length) {
-                const delay = 10 + (Math.random() * 50);
+                const delay = 10 + (Math.random() * 30);
                 setTimeout(typeNextChar, delay);
             } else {
-                setIsTypingComment(false);
+                startTransition(() => {
+                    setIsTypingComment(false);
+                });
             }
         }
 
         typeNextChar();
+    }
+
+    const handleHeartClick = () => {
+        if (isAnimatingHeart) {
+            setIsAnimatingHeart(false);
+        }
+
+        if (isLiked) {
+            setLikes(likes - 1);
+            setIsLiked(false);
+        } else {
+            setLikes(likes + 1);
+            setIsLiked(true);
+            triggerHeartAnimation();
+        }
     }
 
     const handleDoubleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -210,11 +268,15 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-        handleHeartClick({x, y});
+        if (!isLiked) {
+            setLikes(likes + 1);
+            setIsLiked(true);
+        }
+        triggerHeartAnimation(x, y);
     }
 
     const triggerHeartAnimation = (x?: number, y?:number) => {
-        if (!mainImageRef.current || isShowingHeart) return;
+        if (!mainImageRef.current) return;
         const rect = mainImageRef.current.getBoundingClientRect();
 
         setTapCoords({
@@ -222,21 +284,26 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
             y: y ?? rect.height / 2,
         });
 
-        setShowBigHeart(true);
-        setIsShowingHeart(true);
-        console.log("tap coords", tapCoords);
-        setTimeout(() => {
-            setShowBigHeart(false);
-            setIsShowingHeart(false);
+        setIsAnimatingHeart(true);
+
+        if (animationTimeoutRef.current !== null) {
+            clearTimeout(animationTimeoutRef.current);
+        }
+
+        animationTimeoutRef.current = setTimeout(() => {
+            setTapCoords(null);
+            setIsAnimatingHeart(false);
+            animationTimeoutRef.current = null;
         }, 600);
     }
 
     return (
-        <div className={`bg-background border rounded-sm pb-3 w-full max-w-sm mx-auto text-center flex flex-col overflow-hidden ${className}`}>
+        <div className={`bg-background border rounded-sm pb-3 w-full max-w-sm mx-auto text-center flex flex-col overflow-visible ${className}`}>
+
             {/* Header */}
             <div className="flex flex-row border-b border-white/10 justify-between px-3 py-2">
                 <div className="flex flex-row">
-                    <div className="flex items-center justify-center mr-2">
+                    <div className="hidden xs:flex items-center justify-center mr-2">
                         <Image
                             src={profileImageSrc}
                             alt={"Profile picture"}
@@ -251,8 +318,18 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                     </div>
                 </div>
 
-                <div className="flex items-center">
+                {/* Options Button */}
+                <div
+                    ref={optionsMenuButtonRef}
+                    className="relative flex items-center"
+                    onClick={() => setIsOptionsMenuOpen(open => !open)}
+                >
                     <MoreHorizontal className="w-5 h-5 cursor-pointer" />
+
+                    {/* Options Menu */}
+                    {isOptionsMenuOpen && (
+                        <OptionsMenu />
+                    )}
                 </div>
             </div>
 
@@ -266,7 +343,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                 />
 
                 {/* Like Post Animation */}
-                {showBigHeart && tapCoords && <BigHeart x={tapCoords.x} y={tapCoords.y}/>}
+                {isAnimatingHeart && tapCoords && <BigHeart x={tapCoords.x} y={tapCoords.y}/>}
             </div>
 
             {/* Caption */}
@@ -276,20 +353,23 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
 
                     {/* Heart Icon */}
                     <div className="flex items-center gap-1">
-                        <AnimatedIcon onClick={handleHeartClick} icon={Heart} fill={isLiked ? "red" : "none"} color={isLiked ? "red" : "white"} />
+                        <AnimatedIcon onClick={handleHeartClick} icon={Heart} className={`${isLiked ? "text-red-500 fill-red-500" : "text-gray-900 dark:text-gray-100 fill-none"}`} />
                         {likes > 0 && (<span className="text-[12px] font-semibold">{likes}</span>)}
                     </div>
 
                     {/* Comment Icon */}
                     <div className="flex items-center gap-1">
-                        <AnimatedIcon onClick={handleCommentClick} icon={MessageCircle} className="-scale-x-100 hover:-scale-x-100"/>
+                        <AnimatedIcon onClick={handleCommentClick} icon={MessageCircle} className={"-scale-x-100 hover:-scale-x-100 text-gray-900 dark:text-gray-100 fill-none"} />
                         {commentCount > 0 && (<span className="text-[12px] font-semibold">{commentCount}</span>)}
                     </div>
-                    <AnimatedIcon onClick={handleShareClick} icon={Send}/>
+
+                    {/* Share Icon */}
+                    <AnimatedIcon onClick={handleShareClick} icon={Send} className={"text-gray-900 dark:text-gray-100 fill-none"}/>
                 </div>
 
+                {/* Right Icons */}
                 {/* Save Icon */}
-                <AnimatedIcon onClick={handleSaveClick} icon={Bookmark} fill={isSaved ? "white" : "none"} />
+                <AnimatedIcon onClick={handleSaveClick} icon={Bookmark} className={`${isSaved ? "text-gray-900 fill-gray-900 dark:text-gray-100 dark:fill-gray-100" : "text-gray-900 dark:text-gray-100 fill-none"}`} />
             </div>
 
             {/* Caption Text */}
