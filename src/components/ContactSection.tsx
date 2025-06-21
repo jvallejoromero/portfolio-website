@@ -49,28 +49,32 @@ const mockComments = [
 
 const ContactSection = () => {
     return (
-        <SimpleSectionLayout sectionId={"contact"} divClassName="gap-10 lg:gap-0">
-            <div className="flex flex-1 flex-col gap-2">
+        <section id={"contact"} className="flex flex-col ml-10 mr-10 mt-15">
+            <div className="flex flex-col gap-2">
                 <h1>Contact</h1>
                 <p>Let&#39;s Work Together</p>
                 <p className="italic text-muted-foreground text-sm sm:text-base mb-4">
                     Reach out for collaborations, freelance opportunities, or just to say hi!
                 </p>
-                <MockInstagramPost
-                    profileImageSrc={"/images/headshot.png"}
-                    mainImageSrc={"/images/mock-post-image.png"}
-                    username={"jvallejoromero"}
-                    location={"California, USA"}
-                    caption={"#React #Nextjs #TypeScript"}
-                    mockUsers={mockUsers}
-                    mockComments={mockComments}
-                    className={"shadow-md shadow-neutral-300/10"}
-                />
             </div>
-            <div className="flex flex-1 items-center justify-center">
-                <ContactForm />
+            <div className="flex flex-col lg:flex-row mt-5 gap-10 lg:gap-0 items-start justify-start">
+                <div className="w-full lg:self-center">
+                    <MockInstagramPost
+                        profileImageSrc={"/images/headshot.png"}
+                        mainImageSrc={"/images/mock-post-image.png"}
+                        username={"jvallejoromero"}
+                        location={"California, USA"}
+                        caption={"#React #Nextjs #TypeScript"}
+                        mockUsers={mockUsers}
+                        mockComments={mockComments}
+                        className={"shadow-md shadow-neutral-300/10"}
+                    />
+                </div>
+                <div className="w-full lg-self-center">
+                    <ContactForm />
+                </div>
             </div>
-        </SimpleSectionLayout>
+        </section>
     );
 }
 

@@ -298,7 +298,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
     }
 
     return (
-        <div className={`bg-background border rounded-sm pb-3 w-full max-w-sm mx-auto text-center flex flex-col overflow-visible ${className}`}>
+        <div className={`bg-background border rounded-sm pb-3 w-full max-w-sm text-center flex flex-col overflow-visible mx-auto ${className}`}>
 
             {/* Header */}
             <div className="flex flex-row border-b border-white/10 justify-between px-3 py-2">

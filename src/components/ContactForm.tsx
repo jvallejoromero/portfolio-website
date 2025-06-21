@@ -197,8 +197,7 @@ const ContactForm = () => {
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
-                className="flex flex-col p-4 sm:p-6 lg:p-8 gap-6 bg-background border rounded-sm shadow-md max-w-xl w-full mx-auto
-                           sm:max-w-lg lg:max-w-xl"
+                className="flex flex-col p-4 sm:p-6 lg:p-8 gap-6 bg-background border rounded-sm shadow-md max-w-xl w-full sm:max-w-lg lg:max-w-xl mx-auto"
             >
 
                 {/* Name Field */}
