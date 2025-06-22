@@ -55,6 +55,9 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
 
     const [isAnimatingHeart, setIsAnimatingHeart] = useState<boolean>(false);
     const [tapCoords, setTapCoords] = useState<{ x: number; y: number } | null>(null);
+    const [doubleTapCount, setDoubleTapCount] = useState(0);
+    const [heartScale, setHeartScale] = useState(1.0);
+    const lastTapTimeRef = useRef<number>(0);
 
     const mainImageRef = useRef<HTMLDivElement>(null);
     const animationTimeoutRef = useRef<NodeJS.Timeout>(null);
@@ -102,7 +105,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
         );
     };
 
-    const BigHeart = ({ x, y }: { x: number; y: number }) => {
+    const BigHeart = ({ x, y, scale }: { x: number; y: number, scale: number }) => {
         const MotionHeart = motion.create(Heart);
         const diagonalOffset = (Math.random() - 0.5) * 80;
 
@@ -120,20 +123,20 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                 {/* Floating Heart */}
                 <MotionHeart
                     style={{ y: "0%" }}
-                    initial={{ scale: 0.5, opacity: 1, x: 0, y: 0, rotate: 0 }} // start slightly smaller
+                    initial={{ scale: scale, opacity: 1, x: 0, y: 0, rotate: 0 }}
                     animate={{
-                        scale: [1.3, 1], // pop larger then settle at normal
-                        rotate: [0, -5, 5, -3, 3, 0], // subtle wobble
-                        x: [0, diagonalOffset], // more obvious diagonal shift
-                        y: [0, -180], // faster, more aggressive upward motion
-                        opacity: [1, 0], // fade out
+                        scale: [scale * 1.1, 1],
+                        rotate: [0, -5, 5, -3, 3, 0],
+                        x: [0, diagonalOffset],
+                        y: [0, -180],
+                        opacity: [1, 0],
                     }}
                     transition={{
-                        scale: { duration: 0.4, ease: "easeInOut" }, // grow/pop matches wobble duration
-                        rotate: { duration: 0.4, ease: "easeInOut" },   // wobble
-                        x: { duration: 0.2, delay: 0.4, ease: "easeIn" },  // diagonal move
-                        y: { duration: 0.2, delay: 0.4, ease: "easeIn" },   // upward move
-                        opacity: { duration: 0.2, delay: 0.4, ease: "easeIn" },   // fade aligned
+                        scale: { duration: 0.4, ease: "easeInOut" },
+                        rotate: { duration: 0.4, ease: "easeInOut" },
+                        x: { duration: 0.2, delay: 0.4, ease: "easeIn" },
+                        y: { duration: 0.2, delay: 0.4, ease: "easeIn" },
+                        opacity: { duration: 0.2, delay: 0.4, ease: "easeIn" },
                     }}
                     fill="url(#heartGradient)"
                     stroke="none"
@@ -268,6 +271,20 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
+        const now = Date.now();
+        const DOUBLE_TAP_TIMEOUT = 500;
+
+        if (now - lastTapTimeRef.current < DOUBLE_TAP_TIMEOUT) {
+            setDoubleTapCount(prev => prev + 1);
+        } else {
+            setDoubleTapCount(0);
+        }
+
+        const newScale = Math.min(1.0 + (doubleTapCount * 0.10), 2.5);
+        setHeartScale(newScale);
+
+        lastTapTimeRef.current = now;
+
         if (!isLiked) {
             setLikes(likes + 1);
             setIsLiked(true);
@@ -293,6 +310,8 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
         animationTimeoutRef.current = setTimeout(() => {
             setTapCoords(null);
             setIsAnimatingHeart(false);
+            setHeartScale(1.0);
+            setDoubleTapCount(0);
             animationTimeoutRef.current = null;
         }, 600);
     }
@@ -343,7 +362,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                 />
 
                 {/* Like Post Animation */}
-                {isAnimatingHeart && tapCoords && <BigHeart x={tapCoords.x} y={tapCoords.y}/>}
+                {isAnimatingHeart && tapCoords && <BigHeart x={tapCoords.x} y={tapCoords.y} scale={heartScale}/>}
             </div>
 
             {/* Caption */}

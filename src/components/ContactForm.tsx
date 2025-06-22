@@ -221,6 +221,30 @@ const ContactForm = () => {
                     incomplete={!formState.isValid}
                     className="w-full sm:w-auto "
                 />
+
+                <div className="text-[10px] text-muted-foreground">
+                    <span>This site is protected by reCAPTCHA and the </span>
+                    <a
+                        href="https://policies.google.com/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Google Privacy Policy"
+                        className="text-neutral-800 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 hover:underline"
+                    >
+                        Google Privacy Policy
+                    </a>
+                    <span> and </span>
+                    <a
+                        href="https://policies.google.com/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Google Terms of Service"
+                        className="text-neutral-800 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 hover:underline"
+                    >
+                        Terms of Service
+                    </a>
+                    <span> apply.</span>
+                </div>
             </form>
         </>
     );
