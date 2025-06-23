@@ -6,6 +6,7 @@ import Script from "next/script";
 import AnimatedButton from "@/components/AnimatedButton";
 import {useToast} from "@/hooks/ToastHook";
 import {AnimatePresence, motion} from "framer-motion";
+import {FiCheckCircle, FiXCircle} from "react-icons/fi";
 
 interface ContactFormInputs {
     name: string;
@@ -22,6 +23,11 @@ type FormInputProps = {
     placeholder?: string;
     error?: FieldError;
 }
+
+type FormStatus = {
+    message: string;
+    success: boolean;
+};
 
 const getRecaptchaSiteKey = (): string => {
     const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -56,7 +62,7 @@ const FormLabel = ({ id }: { id: string }) => {
 }
 
 const FormInput = ({ id, placeholder, required=true, isEmailInput, error, register}: FormInputProps) => {
-    const {toast, showToast } = useToast(3000);
+    const { toast, showToast } = useToast(3000);
 
     useEffect(() => {
         if (error?.message) {
@@ -87,7 +93,7 @@ const FormInput = ({ id, placeholder, required=true, isEmailInput, error, regist
 }
 
 const FormMessageField = ({ register, error }: { register: UseFormRegister<ContactFormInputs>, error?: FieldError }) => {
-    const {toast, showToast } = useToast(3000);
+    const { toast, showToast } = useToast(3000);
 
     useEffect(() => {
         if (error?.message) {
@@ -106,8 +112,8 @@ const FormMessageField = ({ register, error }: { register: UseFormRegister<Conta
                 {...register("message", {
                     required: "Message is required",
                     minLength: {
-                        value: 15,
-                        message: "Message must be at least 15 characters",
+                        value: 10,
+                        message: "Message must be at least 10 characters",
                     },
                 })}
                 className="w-full h-32 px-4 py-2 bg-neutral-100 dark:bg-neutral-900 rounded-sm placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary transition resize-none"
@@ -158,12 +164,78 @@ const FormErrorMessage = ({ error }: { error: string }) => {
     );
 }
 
+const GoogleReCaptchaInfo = () => {
+    return (
+        <div className="text-[10px] text-muted-foreground">
+            <span>This site is protected by reCAPTCHA and the </span>
+            <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Google Privacy Policy"
+                className="text-neutral-800 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 hover:underline"
+            >
+                Google Privacy Policy
+            </a>
+            <span> and </span>
+            <a
+                href="https://policies.google.com/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Google Terms of Service"
+                className="text-neutral-800 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 hover:underline"
+            >
+                Terms of Service
+            </a>
+            <span> apply.</span>
+        </div>
+    );
+}
+
+const StatusMessage = (status : FormStatus) => {
+    return (
+        <AnimatePresence>
+            <motion.div
+                key={status.success ? "success" : "error"}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 50, opacity: 0 }}
+                transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 }
+                }}
+                className={`absolute flex items-center gap-2 right-0 -top-5 z-20 rounded-md shadow-lg
+                            max-w-xs sm:max-w-sm px-3 sm:px-5 py-2 text-sm md:text-base
+                           ${status.success ? "bg-green-600 border-l-4 border-green-800" : "bg-red-600 border-l-4 border-red-800"} 
+                           text-white text-md`
+                }
+            >
+                {status.message}
+                {status.success ? <FiCheckCircle size={20} /> : <FiXCircle size={20} />}
+            </motion.div>
+        </AnimatePresence>
+    );
+}
+
 const ContactForm = () => {
     const { register, handleSubmit, formState } = useForm<ContactFormInputs>();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [status, setStatus] = useState<FormStatus | null>(null);
+
+    const { toast, showToast } = useToast(10000);
+
+    useEffect(() => {
+        if (status) {
+            if (toast) {
+                return;
+            }
+            showToast(status.message);
+        }
+    }, [status, showToast]);
 
     const onSubmit: SubmitHandler<ContactFormInputs> = async(data) => {
         setIsSubmitting(true);
+        setStatus(null);
 
         const token = await window.grecaptcha.execute(
             getRecaptchaSiteKey(),
@@ -179,10 +251,10 @@ const ContactForm = () => {
         });
 
         if (res.ok) {
-            alert("✅ Message sent!");
+            setStatus({ message: "Message Sent!", success: true });
         } else {
             const err = await res.json();
-            alert("❌ " + (err.error || "Submission failed"));
+            setStatus({ message: err.error || "Submission Failed!", success: false });
         }
         setIsSubmitting(false);
     }
@@ -197,7 +269,7 @@ const ContactForm = () => {
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
-                className="flex flex-col p-4 sm:p-6 lg:p-8 gap-6 bg-background border rounded-sm shadow-md max-w-xl w-full sm:max-w-lg lg:max-w-xl mx-auto"
+                className="relative flex flex-col p-4 sm:p-6 lg:p-8 gap-6 bg-background border rounded-sm shadow-md max-w-xl w-full sm:max-w-lg lg:max-w-xl mx-auto"
             >
 
                 {/* Name Field */}
@@ -222,29 +294,12 @@ const ContactForm = () => {
                     className="w-full sm:w-auto "
                 />
 
-                <div className="text-[10px] text-muted-foreground">
-                    <span>This site is protected by reCAPTCHA and the </span>
-                    <a
-                        href="https://policies.google.com/privacy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Google Privacy Policy"
-                        className="text-neutral-800 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 hover:underline"
-                    >
-                        Google Privacy Policy
-                    </a>
-                    <span> and </span>
-                    <a
-                        href="https://policies.google.com/terms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Google Terms of Service"
-                        className="text-neutral-800 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 hover:underline"
-                    >
-                        Terms of Service
-                    </a>
-                    <span> apply.</span>
-                </div>
+                {/* ReCAPTCHA Info */}
+                <GoogleReCaptchaInfo />
+
+                {toast && status &&(
+                    <StatusMessage message={status.message} success={status.success} />
+                )}
             </form>
         </>
     );
