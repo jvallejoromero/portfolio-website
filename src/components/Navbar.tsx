@@ -1,9 +1,9 @@
 "use client";
 
 import React, {useState, useEffect, useRef, useMemo} from "react";
-import {Home, Mail, User, FileText, MessageSquare} from "lucide-react";
+import {Home, User, FileText, MessageSquare} from "lucide-react";
 import {CgCodeSlash} from "react-icons/cg";
-import {SiGithub, SiLinkedin} from "react-icons/si";
+import {SiGithub, SiGmail, SiLinkedin} from "react-icons/si";
 import {useTheme} from "next-themes";
 import {
     DesktopNavbarContents,
@@ -21,7 +21,7 @@ const navLinks: NavbarEntry[] = [
     { href: "/#contact", label: "Contact", Icon: MessageSquare },
     { href: "https://github.com/jvallejoromero", label: "Github", Icon: SiGithub },
     { href: "https://www.linkedin.com/in/jonathan-vallejo", label: "LinkedIn", Icon: SiLinkedin },
-    { href: "mailto:jonathanvallejo777@gmail.com", label: "Email", Icon: Mail },
+    { href: "mailto:jonathanvallejo777@gmail.com", label: "Email", Icon: SiGmail },
     { href: "/files/resume.pdf", label: "Resume", Icon: FileText, download: "Jonathan_Vallejo_Resume.pdf"},
 ];
 

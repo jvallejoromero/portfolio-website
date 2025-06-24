@@ -18,8 +18,8 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-    {platform: "linkedin", url:"https://www.linkedin.com/in/jonathan-vallejo/"},
     {platform: "github", url:"https://github.com/jvallejoromero"},
+    {platform: "linkedin", url:"https://www.linkedin.com/in/jonathan-vallejo/"},
     {platform: "email", url:"mailto:jonathanvallejo777@gmail.com"},
     {platform: "phone", url:"tel:+14086305003"},
 ];

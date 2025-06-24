@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react'
-import SimpleSectionLayout from "@/components/SimpleSectionLayout";
 import MockInstagramPost from "@/components/MockInstagramPost";
 import ContactForm from "@/components/ContactForm";
 
@@ -25,6 +24,7 @@ const mockUsers = [
     "cheesebored",
     "quietpixels",
     "clean_lines",
+    "yummy_burrito",
 ];
 
 const mockComments = [
@@ -52,9 +52,9 @@ const ContactSection = () => {
         <section id={"contact"} className="flex flex-col ml-10 mr-10 mt-15">
             <div className="flex flex-col gap-2">
                 <h1>Contact</h1>
-                <p>Let&#39;s Work Together</p>
+                <p>Work With Me</p>
                 <p className="italic text-muted-foreground text-sm sm:text-base mb-4">
-                    Reach out for collaborations, freelance opportunities, or just to say hi!
+                    Open to full-time positions in full-stack or specialized web/software development.
                 </p>
             </div>
             <div className="flex flex-col lg:flex-row mt-5 gap-10 lg:gap-0 items-start justify-start">

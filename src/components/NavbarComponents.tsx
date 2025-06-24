@@ -127,7 +127,7 @@ export const DesktopNavbarLayout = ({ children, scrolled=true, showNav=true }: {
                 transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
                 className="mx-auto w-max m-7 px-7 py-3 flex items-center justify-center
                             bg-gradient-to-r from-white/60 via-neutral-200/70 to-white/60  dark:from-black/80 dark:via-neutral-900/70 dark:to-black/80
-                            shadow-xl dark:shadow-lg shadow-neutral-700/10 dark:shadow-neutral-300/10 border border-neutral-500/30 dark:border-neutral-300/20 rounded-full"
+                            shadow-xl dark:shadow-lg shadow-neutral-700/10 dark:shadow-neutral-300/10 border border-neutral-500/30 dark:border-neutral-300/20 rounded-xl"
             >
                 {children}
             </motion.div>
@@ -222,7 +222,7 @@ export const MobileNavbarLayout = ({ isOpen, children }: { isOpen: boolean, chil
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className="py-1 flex items-center justify-center
                             bg-gradient-to-r from-white/60 via-neutral-200/70 to-white/60  dark:from-black/80 dark:via-neutral-900/70 dark:to-black/80
-                            shadow-xl dark:shadow-lg shadow-neutral-700/10 dark:shadow-neutral-300/10 border border-neutral-500/30 dark:border-neutral-300/20 rounded-full"
+                            shadow-xl dark:shadow-lg shadow-neutral-700/10 dark:shadow-neutral-300/10 border border-neutral-500/30 dark:border-neutral-300/20 rounded-xl"
         >
             {children}
         </motion.nav>

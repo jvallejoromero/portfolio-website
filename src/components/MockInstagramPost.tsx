@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, {JSX, useEffect, useRef, useState, useTransition} from "react";
 import { motion } from "framer-motion";
 import { useClickOutside } from "@/hooks/MouseClickHook";
+import {MockInstagramPostPopup} from "@/components/Popups";
 
 type MockInstagramPostProps = {
     profileImageSrc: string,
@@ -40,6 +41,7 @@ const createHashtags = (input: string): (string | JSX.Element)[] => {
 }
 
 const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username", location="somewhere", caption, className="", mockUsers=["user123"], mockComments=["This is amazing!"]}: MockInstagramPostProps) => {
+    const [isPopupMenuOpen, setIsPopupMenuOpen] = useState(false);
     const [isSaved, setIsSaved] = useState<boolean>(false);
 
     const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -142,6 +144,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                     stroke="none"
                     className="w-24 h-24"
                 />
+
                 {/* Gradient Definition */}
                 <svg className="absolute w-0 h-0">
                     <defs>
@@ -157,7 +160,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
     }
 
     const OptionsMenu = () => {
-        const menuOptions = ["Message", "More Info"];
+        const menuOptions = ["More Info"];
         return (
             <motion.div
                 ref={optionsMenuRef}
@@ -176,16 +179,16 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
             >
                 <ul className="divide-y divide-white/10 py-1">
                     {menuOptions.map((option, index) => (
-                        <OptionsMenuButton key={index} title={option} />
+                        <OptionsMenuButton key={index} title={option} onClick={() => handleOptionsMenuClick(option)}/>
                     ))}
                 </ul>
             </motion.div>
         );
     }
 
-    const OptionsMenuButton = ({ title }: { title: string }) => {
+    const OptionsMenuButton = ({ title, onClick }: { title: string, onClick?: () => void }) => {
         return (
-            <li className="px-2 py-2 text-sm font-medium text-gray-800 dark:text-gray-100
+            <li onClick={onClick} className="px-2 py-2 text-sm font-medium text-gray-800 dark:text-gray-100
                         hover:bg-gray-100/20 dark:hover:bg-gray-800/30 cursor-pointer">
                 {title}
             </li>
@@ -204,6 +207,15 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
         } else {
             alert("Sharing is not supported on this browser!");
         }
+    }
+
+    const handleOptionsMenuClick = (option: string) => {
+        const clicked = option.toLowerCase().replace(/\s+/g, '');
+        if (clicked.includes("moreinfo")) {
+            setIsOptionsMenuOpen(false);
+            setIsPopupMenuOpen(true);
+        }
+
     }
 
     const handleSaveClick = () => {
@@ -338,17 +350,19 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                 </div>
 
                 {/* Options Button */}
-                <div
-                    ref={optionsMenuButtonRef}
-                    className="relative flex items-center"
-                    onClick={() => setIsOptionsMenuOpen(open => !open)}
-                >
-                    <MoreHorizontal className="w-5 h-5 cursor-pointer" />
+                <div ref={optionsMenuButtonRef} className="relative flex items-center">
+                    <MoreHorizontal
+                        className="w-5 h-5 cursor-pointer"
+                        onClick={() => setIsOptionsMenuOpen(open => !open)}
+                    />
 
                     {/* Options Menu */}
                     {isOptionsMenuOpen && (
                         <OptionsMenu />
                     )}
+
+                    {/* Popup Easter Egg */}
+                    <MockInstagramPostPopup isOpen={isPopupMenuOpen} onClickOutside={() => setIsPopupMenuOpen(false)} />
                 </div>
             </div>
 
