@@ -24,7 +24,7 @@ const HeroSection = () => {
                 />
 
                 {/* Social Links */}
-                <div className="absolute z-10 inset-x-0 bottom-17 sm:bottom-22 md:bottom-25 flex justify-center gap-5 opacity-0 animate-fade-slide-smooth animate-delay-2800">
+                <div className="absolute z-10 inset-x-0 bottom-17 sm:bottom-22 md:bottom-25 flex md:hidden justify-center gap-5 opacity-0 animate-fade-slide-smooth animate-delay-2800">
                     <a
                         href="https://github.com/jvallejoromero"
                         aria-label="GitHub"
@@ -42,7 +42,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Scroll Indicator */}
-                <div className="hidden absolute bottom-8 left-1/2 transform -translate-x-1/2 sm:flex flex-col items-center">
+                <div className="hidden absolute bottom-8 left-1/2 transform -translate-x-1/2 sm:flex md:hidden flex-col items-center">
                     <span className="sr-only">Scroll down</span>
                     <HiChevronDown
                         aria-hidden="true"

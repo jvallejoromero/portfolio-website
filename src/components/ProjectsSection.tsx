@@ -25,6 +25,7 @@ const ForkedHeader = () => {
                 src="/images/projects/forked-home.png"
                 alt="Image of a place description taken from the Forked app."
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw"
                 className="object-cover"
             />
         </HeaderSkeleton>
@@ -38,6 +39,7 @@ const FragmentationHeader = () => {
                 src="/images/projects/fragmentation-home.png"
                 alt="Image of a fragmentation analysis taken from my fragmentation visualizer."
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw"
                 className="object-cover"
             />
         </HeaderSkeleton>
@@ -51,6 +53,7 @@ const AIRobotHeader = () => {
                 src="/images/projects/ai-robot.png"
                 alt="Image of the AI robot."
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw"
                 className="object-cover"
             />
         </HeaderSkeleton>
@@ -64,6 +67,7 @@ const ExploraHeader = () => {
                 src="/images/projects/explora-home.png"
                 alt="Image of the Explora homepage."
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw"
                 className="object-cover"
             />
         </HeaderSkeleton>

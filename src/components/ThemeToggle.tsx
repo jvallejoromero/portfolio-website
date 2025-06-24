@@ -4,8 +4,13 @@ import { useTheme } from "next-themes";
 import React, { useState, useCallback } from "react";
 import { Sun, Moon } from "lucide-react";
 import { motion } from "framer-motion";
+import {createPortal} from "react-dom";
 
-export default function ThemeToggle() {
+type ThemeToggleProps = {
+    iconClassName: string,
+}
+
+export const ThemeToggle = ({ iconClassName }: ThemeToggleProps) => {
     const { resolvedTheme, setTheme } = useTheme();
     const isDark = resolvedTheme === "dark";
 
@@ -35,14 +40,14 @@ export default function ThemeToggle() {
             {/* Toggle Button */}
             <button
                 onClick={onClick}
-                className="rounded-full text-gray-300 hover:text-white transition-colors"
+                className="hover:text-muted-foreground text-sm transition-colors cursor-pointer p-2 -m-2 rounded-full focus:outline-none focus:ring-1 focus:ring-offset-2"
                 aria-label="Toggle theme"
             >
-                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+                {isDark ? <Sun className={iconClassName} /> : <Moon className={iconClassName} />}
             </button>
 
             {ripple && (
-                <motion.div
+                createPortal(<motion.div
                     key="ripple"
                     initial={{
                         clipPath: `circle(0px at ${ripple.x}px ${ripple.y}px)`,
@@ -66,8 +71,10 @@ export default function ThemeToggle() {
                         setTheme(ripple.next);
                         setRipple(null);
                     }}
-                />
+                />, document.body)
             )}
         </>
     );
 }
+
+export default ThemeToggle;

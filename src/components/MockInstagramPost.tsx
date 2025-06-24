@@ -358,6 +358,7 @@ const MockInstagramPost = ({ profileImageSrc, mainImageSrc, username="username",
                     src={mainImageSrc}
                     alt="Mock post image"
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw"
                     className="object-cover"
                 />
 
