@@ -1,0 +1,15 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /api
+Disallow: /_next
+Disallow: /404
+
+# Host
+Host: https://jvallejoromero.vercel.app
+
+# Sitemaps
+Sitemap: https://jvallejoromero.vercel.app/sitemap.xml

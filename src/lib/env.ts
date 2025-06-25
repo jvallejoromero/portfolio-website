@@ -8,6 +8,7 @@ const EnvSchema = z.object({
     FORM_INBOX_EMAIL: z.string().email(),
     UPSTASH_REDIS_REST_URL: z.string().nonempty(),
     UPSTASH_REDIS_REST_TOKEN: z.string().nonempty(),
+    SITE_URL: z.string().nonempty(),
 });
 
 export const env = EnvSchema.parse(process.env);
