@@ -9,7 +9,7 @@ import {
     NavigationLinks,
     ResumeCTA,
     SocialLinks
-} from './FooterComponents';
+} from '../skeletons/FooterComponents';
 
 const Footer = () => {
     return (

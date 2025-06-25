@@ -6,7 +6,7 @@ import Image from "next/image";
 import {Bot, Puzzle} from "lucide-react";
 import DecryptedText from "@/blocks/TextAnimations/DecryptedText/DecryptedText";
 import TextCursor from "@/blocks/TextAnimations/TextCursor/TextCursor";
-import SimpleSectionLayout from "@/components/SimpleSectionLayout";
+import SimpleSectionLayout from "@/components/skeletons/SimpleSectionLayout";
 
 type HeaderSkeletonProps = {
     children?: React.ReactNode;

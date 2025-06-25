@@ -1,8 +1,8 @@
 import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "next-themes";
-import URLCleaner from "@/components/URLCleaner";
-import Navbar from "@/components/Navbar";
+import URLCleaner from "@/components/utils/URLCleaner";
+import Navbar from "@/components/navigation/Navbar";
 import {env} from "@/lib/env";
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {

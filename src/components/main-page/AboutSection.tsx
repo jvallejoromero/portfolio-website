@@ -1,7 +1,7 @@
 import React from "react";
 import CountUp from "@/blocks/TextAnimations/CountUp/CountUp";
 import RotatingText from "@/blocks/TextAnimations/RotatingText/RotatingText";
-import SimpleSectionLayout from "@/components/SimpleSectionLayout";
+import SimpleSectionLayout from "@/components/skeletons/SimpleSectionLayout";
 
 const StatCard = ({label, value}: {label: string, value: number}) => {
     return (

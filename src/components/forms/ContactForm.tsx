@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import {FieldError, SubmitHandler, useForm, UseFormRegister} from "react-hook-form";
 import Script from "next/script";
-import AnimatedButton from "@/components/AnimatedButton";
+import AnimatedButton from "@/components/buttons/AnimatedButton";
 import {useToast} from "@/hooks/ToastHook";
 import {AnimatePresence, motion} from "framer-motion";
 import {FiCheckCircle, FiXCircle} from "react-icons/fi";

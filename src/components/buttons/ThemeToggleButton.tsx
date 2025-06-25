@@ -12,7 +12,7 @@ type ThemeToggleProps = {
     iconClassName: string,
 }
 
-export const ThemeToggle = ({ iconClassName }: ThemeToggleProps) => {
+export const ThemeToggleButton = ({ iconClassName }: ThemeToggleProps) => {
     const { resolvedTheme, setTheme } = useTheme();
     const isDark = resolvedTheme === "dark";
 
@@ -86,4 +86,4 @@ export const ThemeToggle = ({ iconClassName }: ThemeToggleProps) => {
     );
 }
 
-export default ThemeToggle;
+export default ThemeToggleButton;

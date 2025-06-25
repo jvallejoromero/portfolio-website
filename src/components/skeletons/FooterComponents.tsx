@@ -3,7 +3,7 @@ import {IconType} from "react-icons";
 import {SiGithub, SiGmail, SiLinkedin} from "react-icons/si";
 import {GiSmartphone} from "react-icons/gi";
 import Image from "next/image";
-import GenericButton from "@/components/GenericButton";
+import GenericButton from "@/components/buttons/GenericButton";
 
 const ICON_MAP: {[key: string]: IconType} = {
     email: SiGmail,

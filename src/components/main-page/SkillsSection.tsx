@@ -1,6 +1,6 @@
 "use client";
 
-import SimpleSectionLayout from "@/components/SimpleSectionLayout";
+import SimpleSectionLayout from "@/components/skeletons/SimpleSectionLayout";
 import { Variants, motion } from "framer-motion";
 
 const frontendSkills = [

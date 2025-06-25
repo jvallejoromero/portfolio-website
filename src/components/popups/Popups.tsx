@@ -1,5 +1,5 @@
-import PopupMessage from "@/components/PopupMessage";
-import GenericButton from "@/components/GenericButton";
+import PopupMessage from "@/components/popups/PopupMessage";
+import GenericButton from "@/components/buttons/GenericButton";
 import React from "react";
 
 export const MockInstagramPostPopup = ({ isOpen, onClickOutside }: { isOpen: boolean, onClickOutside: () => void }) => {

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import MockInstagramPost from "@/components/MockInstagramPost";
-import ContactForm from "@/components/ContactForm";
+import ContactForm from "@/components/forms/ContactForm";
 
 const mockUsers = [
     "cool_person",

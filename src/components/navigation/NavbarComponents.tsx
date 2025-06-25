@@ -1,7 +1,7 @@
 import {motion, Variants} from "framer-motion";
 import React from "react";
 import {Menu, X} from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
+import ThemeToggleButton from "@/components/buttons/ThemeToggleButton";
 import {IconType} from "react-icons";
 import Link from "next/link";
 
@@ -51,7 +51,7 @@ export const ToggleThemeNavMenuEntry = ({ isDark, isMotion, iconClassName }: { i
                     whileHover="hover"
                     whileTap="tap"
                 >
-                    <ThemeToggle iconClassName={iconClassName}/>
+                    <ThemeToggleButton iconClassName={iconClassName}/>
                 </motion.div>
                 <NavbarTooltip text={isDark ? "Light mode" : "Dark mode"} />
             </li>
@@ -59,7 +59,7 @@ export const ToggleThemeNavMenuEntry = ({ isDark, isMotion, iconClassName }: { i
     } else {
         return (
             <li className="block px-4 py-2">
-                <ThemeToggle iconClassName={iconClassName} />
+                <ThemeToggleButton iconClassName={iconClassName} />
                 <NavbarTooltip text={isDark ? "Light mode" : "Dark mode"} />
             </li>
         );

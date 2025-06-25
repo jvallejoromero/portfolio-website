@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, {JSX, useEffect, useRef, useState, useTransition} from "react";
 import { motion } from "framer-motion";
 import { useClickOutside } from "@/hooks/MouseClickHook";
-import {MockInstagramPostPopup} from "@/components/Popups";
+import {MockInstagramPostPopup} from "@/components/popups/Popups";
 
 type MockInstagramPostProps = {
     profileImageSrc: string,

@@ -2,7 +2,7 @@ import React from "react";
 import BlurText from "@/blocks/TextAnimations/BlurText/BlurText";
 import {SiGithub, SiLinkedin} from "react-icons/si";
 import {HiChevronDown} from "react-icons/hi";
-import GradientBackground from "./GradientBackground";
+import GradientBackground from "../ui/GradientBackground";
 
 const HeroSection = () => {
     return (

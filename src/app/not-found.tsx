@@ -1,5 +1,5 @@
-import GradientBackground from '@/components/GradientBackground';
-import GenericButton from '@/components/GenericButton';
+import GradientBackground from '@/components/ui/GradientBackground';
+import GenericButton from '@/components/buttons/GenericButton';
 import Link from 'next/link'
 import {
     CopyrightInformation,
@@ -7,7 +7,7 @@ import {
     GenericFooter, GenericFooterLayout,
     ResumeCTA,
     SocialLinks
-} from "@/components/FooterComponents";
+} from "@/components/skeletons/FooterComponents";
 import React from "react";
 
 export default function NotFound() {
