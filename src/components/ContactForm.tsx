@@ -237,25 +237,50 @@ const ContactForm = () => {
         setIsSubmitting(true);
         setStatus(null);
 
-        const token = await window.grecaptcha.execute(
-            getRecaptchaSiteKey(),
-            { action: "contact_form" }
-        );
-
-        const payload = { ...data, recaptchaToken: token };
-
-        const res = await fetch("/api/contact", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-        });
-
-        if (res.ok) {
-            setStatus({ message: "Message Sent!", success: true });
-        } else {
-            const err = await res.json();
-            setStatus({ message: err.error || "Submission Failed!", success: false });
+        let token: string;
+        try {
+            token = await window.grecaptcha.execute(
+                getRecaptchaSiteKey(),
+                { action: "contact_form" }
+            );
+        } catch {
+            setStatus({
+                message: "reCAPTCHA verification failed. Please refresh and try again.",
+                success: false,
+            });
+            setIsSubmitting(false);
+            return;
         }
+
+        let res: Response;
+        try {
+            res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ...data, recaptchaToken: token }),
+            });
+        } catch {
+            setStatus({
+                message: "Cannot reach server. Please try again later.",
+                success: false,
+            });
+            setIsSubmitting(false);
+            return;
+        }
+
+        if (!res.ok) {
+            let errMsg = "Submission failed. Please try again.";
+            try {
+                const payload = await res.json();
+                if (payload.error) errMsg = payload.error;
+            } catch {}
+
+            setStatus({ message: errMsg, success: false });
+            setIsSubmitting(false);
+            return;
+        }
+
+        setStatus({ message: "Message Sent!", success: true });
         setIsSubmitting(false);
     }
 

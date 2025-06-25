@@ -6,6 +6,8 @@ import { Sun, Moon } from "lucide-react";
 import { motion } from "framer-motion";
 import {createPortal} from "react-dom";
 
+type RippleData = { x: number; y: number; next: "light" | "dark"; key: string };
+
 type ThemeToggleProps = {
     iconClassName: string,
 }
@@ -14,15 +16,22 @@ export const ThemeToggle = ({ iconClassName }: ThemeToggleProps) => {
     const { resolvedTheme, setTheme } = useTheme();
     const isDark = resolvedTheme === "dark";
 
-    const [ripple, setRipple] = useState<{ x: number, y: number, next: "light" | "dark" } | null>(null);
+    const [ripple, setRipple] = useState<RippleData | null>(null);
 
     const onClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+            if (ripple) {
+                return;
+            }
+
             const rect = (e.target as HTMLElement).getBoundingClientRect();
             // center of the button
             const x = rect.left + rect.width / 2;
             const y = rect.top + rect.height / 2;
-            setRipple({ x, y, next: isDark ? "light" : "dark" });
-        }, [isDark]);
+
+            const next = isDark ? "light" : "dark";
+            const key = `${next}-${Date.now()}`;
+            setRipple({ x, y, next, key });
+        }, [isDark, ripple]);
 
     // Calculate max radius to cover the viewport
     const maxRadius = () => {
@@ -48,7 +57,7 @@ export const ThemeToggle = ({ iconClassName }: ThemeToggleProps) => {
 
             {ripple && (
                 createPortal(<motion.div
-                    key="ripple"
+                    key={ripple.key}
                     initial={{
                         clipPath: `circle(0px at ${ripple.x}px ${ripple.y}px)`,
                         backgroundColor: isDark ? "#fff" : "#000",

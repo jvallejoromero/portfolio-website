@@ -5,6 +5,7 @@ import Mailjet from "node-mailjet";
 import {NextResponse} from "next/server";
 import { contactFormLimiter } from "@/lib/rate-limit";
 import sanitizeHtml from 'sanitize-html';
+import {randomId} from "@/lib/utils";
 
 const mj = Mailjet.apiConnect(env.MAILJET_API_KEY!, env.MAILJET_SECRET_KEY!);
 
@@ -144,7 +145,7 @@ export const POST = async(req: Request) => {
                     Email: sanitizedEmail,
                     Name: sanitizedName,
                 },
-                Subject: `New message from ${sanitizedName}`,
+                Subject: `New message from ${sanitizedName} [#${randomId()}]`,
                 TextPart: `Name: ${sanitizedName}\nEmail: ${sanitizedEmail}\n\n${sanitizedMessage}`,
                 HTMLPart:
                     `
