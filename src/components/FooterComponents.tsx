@@ -178,7 +178,7 @@ export const NavigationLinks = () => {
 export const CopyrightInformation = () => {
     return (
         <div className="border-t border-neutral-400/10">
-            <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between pt-4 pb-5 px-4">
+            <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between pt-10 pb-5 px-4">
                 <p className="order-2 md:order-1 mt-2 md:mt-0 text-xs">&copy; {new Date().getFullYear()} Jonathan Vallejo. All rights reserved.</p>
                 <a href="#top" className="order-1 md:order-2 text-xs hover:underline">
                     Back to top ↑
@@ -190,7 +190,7 @@ export const CopyrightInformation = () => {
 
 export const GenericFooterLayout = ({ children }: { children: React.ReactNode}) => {
     return (
-        <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 py-8 px-8 xl:px-4 gap-x-8 gap-y-6">
+        <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 pt-8 pb-12 px-8 xl:px-4 gap-x-8 gap-y-6">
             {children}
         </div>
     );

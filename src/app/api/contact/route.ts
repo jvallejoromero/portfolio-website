@@ -132,12 +132,12 @@ export const POST = async(req: Request) => {
             {
                 From: {
                     Email: env.FORM_SENDER_EMAIL,
-                    Name: "Contact Form",
+                    Name: "My Portfolio Website",
                 },
                 To: [
                     {
                         Email: env.FORM_INBOX_EMAIL,
-                        Name: 'Contact Form',
+                        Name: "Contact Form",
                     },
                 ],
                 ReplyTo: {
@@ -148,8 +148,8 @@ export const POST = async(req: Request) => {
                 TextPart: `Name: ${sanitizedName}\nEmail: ${sanitizedEmail}\n\n${sanitizedMessage}`,
                 HTMLPart:
                     `
-                    <h2>New message from ${sanitizedName}</h2> 
-                    <p><strong>Email:</strong> ${sanitizedEmail}</p> 
+                    <h4>You received a new message from ${sanitizedName}</h4> 
+                    <p><strong>Reply To:</strong> ${sanitizedEmail}</p> 
                     <div>${sanitizedMessage.replace(/\n/g, "<br/>")}</div>
                     `
                 ,
